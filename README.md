@@ -40,13 +40,23 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+Express is like React for backend. Express forces us to make more decisions due to the flexibility and control it provides.
+
 - [ ] Describe Middleware?
+
+Middleware functions can get a request & response objects, operate on them, & trigger an action (when specified to). Examples of middleware are logging & security. Middleware is kind of like an array of functions & middleware can change a request or response but it also doesn't have to.
 
 - [ ] Describe a Resource?
 
+Applied to computer programs, resources are data files that accompany a program's executable code. Resources simplify the code you have to write by moving the creation of complex sets of data or graphical content outside of your code and into more appropriate tools.
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+You can program a succesful response status to show the request was succesful or thinking backwards you could program to return an error if it isn't a success.
+
 - [ ] How can we partition our application into sub-applications?
+
+Using Express Routers help to split an application into sub-applications & make it more modular or easier to maintain and reason about.
 
 ## Minimum Viable Product
 
