@@ -3,8 +3,8 @@ const router = express.Router();
 const Projects = require("../data/helpers/projectModel");
 
 //GET projects
-router.get("/", (req, res) => {
-    const { id } = req.params.id;
+router.get("/", validateProjectId, (req, res) => {
+    const id = req.params.id;
     Projects.get(id)
     .then(project => {
         res.status(200).json(project);
@@ -15,8 +15,8 @@ router.get("/", (req, res) => {
 });
 
 //GET projects by id
-router.get("/:id", (req, res) => {
-    const { id } = req.params.id;
+router.get("/:id", validateProjectId, (req, res) => {
+    const id = req.params.id;
     Projects.get(id)
     .then(project => {
         res.status(200).json(project);
@@ -26,9 +26,9 @@ router.get("/:id", (req, res) => {
     });   
 });
 
-//GET actions by project id
-router.get("/:id/actions", (req, res) => {
-    const { projectId } = req.params.id;
+//GET actions on projects by project id
+router.get("/:id/actions", validateProjectId, (req, res) => {
+    const projectId = req.params.id;
     Projects.getProjectActions(projectId)
     .then(project => {
         res.status(200).json(project);
@@ -39,8 +39,8 @@ router.get("/:id/actions", (req, res) => {
 });
 
 //POST to projects
-router.post("/", (req, res) => {
-    const { project } = req.body;
+router.post("/", validateProject, (req, res) => {
+    const project = req.body;
     Projects.insert(project)
     .then(project => {
         res.status(201).json(project);
@@ -51,8 +51,8 @@ router.post("/", (req, res) => {
 });
 
 //DELETE project
-router.delete("/:id", (req, res) => {
-    const { id } = req.params.id;
+router.delete("/:id", validateProjectId, (req, res) => {
+    const id = req.params.id;
     Projects.remove(id)
     .then(project => {
         res.status(201).json(project);
@@ -63,9 +63,9 @@ router.delete("/:id", (req, res) => {
 })
 
 //PUT project
-router.put("/:id", (req, res) => {
-    const { id } = req.params.id;
-    const { changes } = req.body;
+router.put("/:id", validateProjectId, validateProject, (req, res) => {
+    const id = req.params.id;
+    const changes = req.body;
     Projects.update(id, changes)
     .then(project => {
         res.status(201).json(project);
