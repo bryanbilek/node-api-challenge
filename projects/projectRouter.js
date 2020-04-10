@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Projects = require("../data/helpers/projectModel");
+const Actions = require("../data/helpers/actionModel");
 
 //GET projects
 router.get("/", validateProjectId, (req, res) => {
@@ -50,6 +51,19 @@ router.post("/", validateProject, (req, res) => {
     });
 });
 
+//POST to projects - actions
+router.post("/:id/actions", validateProjectId, validateAction, (req, res) => {
+    const action = req.body;
+     action.project_id = req.params.id;
+    Actions.insert(action)
+    .then(action => {
+        res.status(201).json(action);
+    })
+    .catch(err => {
+        res.status(500).json({ error: "problem adding action" });
+    });
+})
+
 //DELETE project
 router.delete("/:id", validateProjectId, (req, res) => {
     const id = req.params.id;
@@ -98,18 +112,19 @@ function validateProjectId(req, res, next) {
       } else {
         next();
       }
-  }
+ }
 
-  function validateAction(req, res, next) {
+ function validateAction(req, res, next) {
     //validateAction validates the body on a request to create a new action
     if (!req.body) {
         res.status(400).json({ message: 'missing action data' })
       } else if (!req.body.project_id || !req.body.description || !req.body.notes) {
         res.status(400).json({ message: "please fill in all fields as they are required" })
-      } else if(!req.body.description.length <= 128) {
+      } else if(req.body.description.length > 128) {
           res.status(400).json({ message: "Exceeded max characters of 128"});
       } else {
           next();
       }
   }
+
 module.exports = router;
